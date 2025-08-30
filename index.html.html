@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星辰情感树洞</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: #fff;
+            background: linear-gradient(135deg, #0a0e29 0%, #1a1f4b 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 60px;
+        }
+        
+        /* 星空背景 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(13, 18, 48, 0.7);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #a6d0ff;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: #e6e6ff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #64b5f6;
+        }
+        
+        /* 内容区域 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #e6e6ff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(100, 181, 246, 0.5); }
+        }
+        
+        .subtitle {
+            font-size: 1.8rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            color: #a6d0ff;
+        }
+        
+        /* 版块样式 */
+        .section {
+            background: rgba(13, 18, 48, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 80px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #a6d0ff;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2 .icon {
+            margin-right: 15px;
+            font-size: 2.5rem;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .section p {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #e6e6ff;
+        }
+        
+        .quote {
+            font-style: italic;
+            padding: 20px;
+            border-left: 4px solid #64b5f6;
+            background: rgba(100, 181, 246, 0.1);
+            border-radius: 0 10px 10px 0;
+            margin: 30px 0;
+        }
+        
+        .greeting {
+            border-left: 8px solid #64b5f6;
+        }
+        
+        .encouragement {
+            border-left: 8px solid #81c784;
+        }
+        
+        .acceptance {
+            border-left: 8px solid #f48fb1;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 8px 10px;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .section h2 {
+                font-size: 2rem;
+            }
+            
+            .section p {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* 流星效果 */
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+            animation: shoot linear;
+            z-index: -1;
+        }
+        
+        @keyframes shoot {
+            0% {
+                opacity: 0;
+                transform: translateX(0) translateY(0) rotate(45deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100vw) translateY(100vh) rotate(45deg);
+            }
+        }
+        
+        /* 分享按钮 */
+        .share-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(100, 181, 246, 0.8);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .share-btn:hover {
+            background: rgba(100, 181, 246, 1);
+            transform: scale(1.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #a6b0cf;
+            font-size: 1.1rem;
+            margin-top: 60px;
+        }
+        
+        .heart {
+            color: #f48fb1;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 星空背景 -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">星辰情感树洞</div>
+        <ul class="nav-links">
+            <li><a href="#greeting">问候</a></li>
+            <li><a href="#encouragement">鼓励</a></li>
+            <li><a href="#acceptance">包容</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <header>
+            <h1>星辰情感树洞</h1>
+            <p class="subtitle">在这里，你的情绪被看见、被理解、被接纳</p>
+        </header>
+        
+        <main>
+            <section id="greeting" class="section greeting">
+                <h2><span class="icon">✨</span> 你来啦~</h2>
+                <p>今天你过得好吗？无论今天发生了什么，都感谢你来到这里。</p>
+                <p>在这里，你可以放下所有伪装，做最真实的自己。</p>
+                <p>你的感受很重要，每一种情绪都值得被温柔对待。</p>
+                <div class="quote">
+                    "有些日子可能会很艰难，但你已经很勇敢了。"
+                </div>
+            </section>
+            
+            <section id="encouragement" class="section encouragement">
+                <h2><span class="icon">🌙</span> 情绪的合理性</h2>
+                <p>你现在的沮丧难过都是合理的，不需要为此感到羞愧。</p>
+                <p>允许这些情绪存在，它们是你内心世界的一部分。</p>
+                <p>就像夜空有星星也有黑暗，我们的内心也有光明与阴影。</p>
+                <p>不必急于摆脱它们，给自己一些时间和空间去感受。</p>
+                <div class="quote">
+                    "情绪就像波浪，来了又会走。允许自己感受，但不要被淹没。"
+                </div>
+            </section>
+            
+            <section id="acceptance" class="section acceptance">
+                <h2><span class="icon">🌟</span> 无条件的包容</h2>
+                <p>就算世界上所有人都不理解你，在这里，你的所有情绪都会被接纳。</p>
+                <p>我理解你，理解你内心的挣扎与矛盾。</p>
+                <p>你不必完美，不必总是坚强，不必满足所有人的期待。</p>
+                <p>在这里，你可以只是你，真实的、完整的你。</p>
+                <div class="quote">
+                    "你不需要变得完美才值得被爱，现在的你就足够美好。"
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>星辰情感树洞 · 永远为你敞开 <span class="heart">❤</span></p>
+        </footer>
+    </div>
+
+    <!-- 分享按钮 -->
+    <div class="share-btn" onclick="shareSite()">
+        <i class="fas fa-share-alt"></i>
+    </div>
+
+    <script>
+        // 创建星星背景
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 300;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机星星大小
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // 随机位置
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // 随机闪烁速度
+                const duration = 3 + Math.random() * 5;
+                star.style.animationDuration = `${duration}s`;
+                
+                // 随机闪烁延迟
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 创建流星效果
+        function createShootingStar() {
+            const body = document.querySelector('body');
+            const shootingStar = document.createElement('div');
+            shootingStar.classList.add('shooting-star');
+            
+            // 随机大小
+            const width = 50 + Math.random() * 100;
+            shootingStar.style.width = `${width}px`;
+            
+            // 随机位置
+            const startX = Math.random() * window.innerWidth / 2;
+            const startY = Math.random() * window.innerHeight / 3;
+            shootingStar.style.left = `${startX}px`;
+            shootingStar.style.top = `${startY}px`;
+            
+            // 随机速度
+            const duration = 1 + Math.random() * 2;
+            shootingStar.style.animationDuration = `${duration}s`;
+            
+            body.appendChild(shootingStar);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                shootingStar.remove();
+            }, duration * 1000);
+        }
+        
+        // 滚动显示动画
+        function checkScroll() {
+            const sections = document.querySelectorAll('.section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.85) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+        
+        // 分享功能
+        function shareSite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '星辰情感树洞',
+                    text: '一个温暖的情感树洞网站，来这里倾诉你的情绪吧~',
+                    url: window.location.href
+                })
+                .then(() => console.log('分享成功'))
+                .catch((error) => console.log('分享失败', error));
+            } else {
+                // 复制链接到剪贴板
+                const tempInput = document.createElement('input');
+                tempInput.value = window.location.href;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                
+                alert('链接已复制到剪贴板，快去分享给需要的人吧~');
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            // 定期创建流星
+            setInterval(createShootingStar, 5000);
+            
+            // 初始创建几个流星
+            for (let i = 0; i < 3; i++) {
+                setTimeout(createShootingStar, i * 800);
+            }
+            
+            // 初始检查滚动位置
+            checkScroll();
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>
